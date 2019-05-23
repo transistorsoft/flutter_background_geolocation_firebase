@@ -38,7 +38,7 @@ dependencies:
 
 ```yaml
 dependencies:
-  background_fetch:
+  background_geolocation_firebase:
     git:
       url: https://github.com/transistorsoft/flutter_background_geolocation_firebase
 ```
