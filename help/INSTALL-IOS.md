@@ -1,10 +1,28 @@
 # iOS Setup
 
-## Configure Background Capabilities
+### :open_file_folder: **`AppDelegate.m`**
 
-- Select the root of your project.  Select **Capabilities** tab.  Enable **Background Modes** and enable the following mode:
+```diff
+#include "AppDelegate.h"
+#include "GeneratedPluginRegistrant.h"
 
-- [x] Background fetch
++#import <Firebase/Firebase.h>
 
-![](https://dl.dropboxusercontent.com/s/9f86qcx6l4v1muj/step6.png?dl=1)
+@implementation AppDelegate
 
+ - (BOOL)application:(UIApplication *)application
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [GeneratedPluginRegistrant registerWithRegistry:self];
+  // Override point for customization after application launch.
++ [FIRApp configure];
+  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+}
+
+@end
+```
+
+### **`Google-Services-Info.plist`**
+
+From your [*Firebase Console*](https://console.firebase.google.com), copy your downloaded `Google-Services-Info.plist` file into your application:
+
+![](https://dl.dropboxusercontent.com/s/4s7kfa6quusqk7i/Google-Services.plist.png?dl=1)

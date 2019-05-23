@@ -20,10 +20,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _enabled;
+  String _locationJSON;
+  JsonEncoder _encoder = new JsonEncoder.withIndent('  ');
 
   @override
   void initState() {
     _enabled = false;
+    _locationJSON = "Toggle the switch to start tracking.";
 
     super.initState();
     initPlatformState();
@@ -34,10 +37,26 @@ class _MyAppState extends State<MyApp> {
 
     bg.BackgroundGeolocation.onLocation((bg.Location location) {
       print('[location] $location');
+      setState(() {
+        _locationJSON = _encoder.convert(location.toMap());
+      });
+    });
+
+    bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
+      bg.BackgroundGeolocation.addGeofence(bg.Geofence(
+        identifier: location.timestamp,
+        radius: 200,
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        notifyOnEntry: true,
+        notifyOnExit: true
+      ));
     });
 
     BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
-      locationsCollection: "locations"
+      locationsCollection: "locations",
+      geofencesCollection: "geofences",
+      updateSingleDocument: false
     ));
 
     bg.BackgroundGeolocation.ready(bg.Config(
@@ -49,10 +68,6 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _enabled = state.enabled;
       });
-
-      if (!state.enabled) {
-        bg.BackgroundGeolocation.start();
-      }
     });
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -76,19 +91,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    const EMPTY_TEXT = Center(child: Text('Waiting for fetch events.  Simulate one.\n [Android] \$ ./scripts/simulate-fetch\n [iOS] XCode->Debug->Simulate Background Fetch'));
-
     return new MaterialApp(
       home: new Scaffold(
         appBar: new AppBar(
-          title: const Text('BackgroundGeolocation Firebase Example', style: TextStyle(color: Colors.black)),
+          title: const Text('BGGeo Firebase Example', style: TextStyle(color: Colors.black)),
           backgroundColor: Colors.amberAccent,
           brightness: Brightness.light,
           actions: <Widget>[
             Switch(value: _enabled, onChanged: _onClickEnable),
           ]
         ),
-        body: Text("Sample Text"),
+        body: Text(_locationJSON),
         bottomNavigationBar: BottomAppBar(
           child: Container(
             padding: EdgeInsets.only(left: 5.0, right:5.0),

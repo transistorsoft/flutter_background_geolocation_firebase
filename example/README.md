@@ -1,6 +1,6 @@
-# background_fetch_example
+# background_geolocation_firebase Example
 
-Demonstrates how to use the background_fetch plugin.
+Demonstrates how to use the `background_geolocation_firebase` plugin.
 
 ## Getting Started
 

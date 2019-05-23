@@ -1,4 +1,4 @@
-name: background_fetch_example
+name: background_geolocation_firebase_example
 description: Demonstrates how to use the background_fetch plugin.
 
 # The following defines the version and build number for your application.
@@ -27,6 +27,7 @@ dev_dependencies:
 
   background_geolocation_firebase:
     path: ../
+  flutter_background_geolocation: ^1.0.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
