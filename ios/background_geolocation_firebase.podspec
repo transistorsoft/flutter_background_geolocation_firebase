@@ -2,7 +2,7 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name             = 'background_beolocation_firebase'
+  s.name             = 'background_geolocation_firebase'
   s.version          = '0.0.1'
   s.summary          = 'Firebase adapter for flutter_background_geolocation'
   s.description      = <<-DESC

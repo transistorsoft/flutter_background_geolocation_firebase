@@ -1,186 +1,265 @@
-react-native-background-fetch &middot; [![npm](https://img.shields.io/npm/dm/react-native-background-fetch.svg)]() [![npm](https://img.shields.io/npm/v/react-native-background-fetch.svg)]()
-==============================================================================
+Flutter `background_geolocation_firebase`
+============================================================================
 
 [![](https://dl.dropboxusercontent.com/s/nm4s5ltlug63vv8/logo-150-print.png?dl=1)](https://www.transistorsoft.com)
 
-By [**Transistor Software**](http://transistorsoft.com), creators of [**React Native Background Geolocation**](http://www.transistorsoft.com/shop/products/react-native-background-geolocation)
+-------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------
+Firebase Proxy for [Flutter Background Geolocation](https://github.com/transistorsoft/flutter_background_geolocation).  The plugin will automatically post locations to your own Firestore database, overriding the `flutter_background_geolocation` plugin's SQLite / HTTP services.
 
-Background Fetch is a *very* simple plugin which will awaken an app in the background about **every 15 minutes**, providing a short period of background running-time.  This plugin will execute your provided `callbackFn` whenever a background-fetch event occurs.
+![](https://dl.dropboxusercontent.com/s/2ew8drywpvbdujz/firestore-locations.png?dl=1)
 
-There is **no way** to increase the rate which a fetch-event occurs and this plugin sets the rate to the most frequent possible &mdash; you will **never** receive an event faster than **15 minutes**.  The operating-system will automatically throttle the rate the background-fetch events occur based upon usage patterns.  Eg: if user hasn't turned on their phone for a long period of time, fetch events will occur less frequently.
+----------------------------------------------------------------------------
 
-The Android plugin provides a [HeadlessJS](https://facebook.github.io/react-native/docs/headless-js-android.html) implementation allowing you to continue handling events even after app-termination (see **[`@config enableHeadless`](#config-boolean-enableheadless-false)**)
+The **[Android module](https://shop.transistorsoft.com/collections/frontpage/products/background-geolocation-firebase)** requires [purchasing a license](https://shop.transistorsoft.com/collections/frontpage/products/background-geolocation-firebase).  However, it *will* work for **DEBUG** builds.  It will **not** work with **RELEASE** builds [without purchasing a license](https://shop.transistorsoft.com/collections/frontpage/products/background-geolocation-firebase).
 
-## Installing the plugin
+----------------------------------------------------------------------------
 
-### With `yarn`
+# Contents
 
-```bash
-$ yarn add react-native-background-fetch
+- ### :books: [API Documentation](https://pub.dartlang.org/documentation/background_geolocation_firebase/latest/background_geolocation_firebase/BackgroundGeolocationFirebase-class.html)
+- ### [Installing the Plugin](#large_blue_diamond-installing-the-plugin)
+- ### [Setup Guides](#large_blue_diamond-setup-guides)
+- ### [Configuration Options](#large_blue_diamond-configuration-options)
+- ### [Example](#large_blue_diamond-example)
+- ### [Demo Application](./example)
+
+
+## :large_blue_diamond: Installing the Plugin
+
+:open_file_folder: **`pubspec.yaml`**:
+
+```yaml
+dependencies:
+  background_geolocation_firebase: '^0.1.0'
 ```
 
-### With `npm`
-```bash
-$ npm install --save react-native-background-fetch
+### Or latest from Git:
+
+```yaml
+dependencies:
+  background_fetch:
+    git:
+      url: https://github.com/transistorsoft/flutter_background_geolocation_firebase
 ```
 
-## iOS Setup
-- [`react-native link` Setup](docs/INSTALL-LINK-IOS.md)
-- [Cocoapods Setup](docs/INSTALL-COCOAPODS-IOS.md)
-- [Manual Setup](docs/INSTALL-MANUAL-IOS.md)
+## :large_blue_diamond: Setup Guides
 
-## Android Setup
-- [`react-native link` Setup](docs/INSTALL-LINK-ANDROID.md)
-- [Manual Setup](docs/INSTALL-MANUAL-ANDROID.md)
+- [iOS](./help/INSTALL-IOS.md)
+- [Android](./help/INSTALL-ANDROID.md)
 
-## Example ##
 
-```javascript
+## :large_blue_diamond: Example
 
-import BackgroundFetch from "react-native-background-fetch";
+```dart
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-export default class App extends Component {
-  componentDidMount() {
-    // Configure it.
-    BackgroundFetch.configure({
-      minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
-      stopOnTerminate: false,   // <-- Android-only,
-      startOnBoot: true         // <-- Android-only
-    }, () => {
-      console.log("[js] Received background-fetch event");
-      // Required: Signal completion of your task to native code
-      // If you fail to do this, the OS can terminate your app
-      // or assign battery-blame for consuming too much background-time
-      BackgroundFetch.finish(BackgroundFetch.FETCH_RESULT_NEW_DATA);
-    }, (error) => {
-      console.log("[js] RNBackgroundFetch failed to start");
-    });
+import 'package:background_geolocation_firebase/background_geolocation_firebase.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
 
-    // Optional: Query the authorization status.
-    BackgroundFetch.status((status) => {
-      switch(status) {
-        case BackgroundFetch.STATUS_RESTRICTED:
-          console.log("BackgroundFetch restricted");
-          break;
-        case BackgroundFetch.STATUS_DENIED:
-          console.log("BackgroundFetch denied");
-          break;
-        case BackgroundFetch.STATUS_AVAILABLE:
-          console.log("BackgroundFetch is enabled");
-          break;
-      }
-    });
-  }
-};
-```
-
-## Config
-
-### Common Options
-
-#### `@param {Integer} minimumFetchInterval [15]`
-
-The minimum interval in **minutes** to execute background fetch events.  Defaults to **`15`** minutes.  **Note**:  Background-fetch events will **never** occur at a frequency higher than **every 15 minutes**.  Apple uses a secret algorithm to adjust the frequency of fetch events, presumably based upon usage patterns of the app.  Fetch events *can* occur less often than your configured `minimumFetchInterval`.
-
-### Android Options
-
-#### `@config {Boolean} stopOnTerminate [true]`
-
-Set `false` to continue background-fetch events after user terminates the app.  Default to `true`.
-
-#### `@config {Boolean} startOnBoot [false]`
-
-Set `true` to initiate background-fetch events when the device is rebooted.  Defaults to `false`.
-
-:exclamation: **NOTE:** `startOnBoot` requires `stopOnTerminate: false`.
-
-#### `@config {Boolean} forceReload [false]`
-
-Set `true` to automatically relaunch the application (if it was terminated) &mdash; the application will launch to the foreground then immediately minimize.  Defaults to `false`.
-
-#### `@config {Boolean} enableHeadless [false]`
-
-Set `true` to enable React Native's [Headless JS](https://facebook.github.io/react-native/docs/headless-js-android.html) mechanism, for handling fetch events after app termination.
-
-* :open_file_folder: **`index.js`**
-```javascript
-import BackgroundFetch from "react-native-background-fetch";
-
-let MyHeadlessTask = async (event) => {
-  console.log('[BackgroundFetch HeadlessTask] start');
-
-  // Perform an example HTTP request.
-  // Important:  await asychronous tasks when using HeadlessJS.
-  let response = await fetch('https://facebook.github.io/react-native/movies.json');
-  let responseJson = await response.json();
-  console.log('[BackgroundFetch HeadlessTask response: ', responseJson);
-
-  // Required:  Signal to native code that your task is complete.
-  // If you don't do this, your app could be terminated and/or assigned
-  // battery-blame for consuming too much time in background.
-  BackgroundFetch.finish();
+void main() {
+  runApp(new MyApp());
 }
 
-// Register your BackgroundFetch HeadlessTask
-BackgroundFetch.registerHeadlessTask(MyHeadlessTask);
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => new _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+
+    // 1.  First configure the Firebase Adapter.
+    BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+      locationsCollection: "locations",
+      geofencesCollection: "geofences",
+      updateSingleDocument: false
+    ));
+
+    // 2.  Configure BackgroundGeolocation as usual.
+    bg.BackgroundGeolocation.onLocation((bg.Location location) {
+      print('[location] $location');
+    });
+
+    bg.BackgroundGeolocation.ready(bg.Config(
+      debug: true,
+      logLevel: bg.Config.LOG_LEVEL_VERBOSE,
+      stopOnTerminate: false,
+      startOnBoot: true
+    )).then((bg.State state) {
+      if (!state.enabled) {
+        bg.BackgroundGeolocation.start();
+      }
+    });
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      home: new Scaffold(
+        appBar: new AppBar(
+          title: const Text('BGGeo Firebase Example', style: TextStyle(color: Colors.black)),
+          backgroundColor: Colors.amberAccent,
+          brightness: Brightness.light,
+
+        ),
+        body: Text("BGGeo Firebase")
+      ),
+    );
+  }
+}
+```
+
+## :large_blue_diamond: Firebase Functions
+
+`BackgroundGeolocation` will post its [default "Location Data Schema"](https://github.com/transistorsoft/flutter_background_geolocation/wiki/Location-Data-Schema) to your Firebase app.
+
+```json
+{
+  "location":{},
+  "param1": "param 1",
+  "param2": "param 2"
+}
+```
+
+You should implement your own [Firebase Functions](https://firebase.google.com/docs/functions) to "*massage*" the incoming data in your collection as desired.  For example:
+
+```typescript
+import * as functions from 'firebase-functions';
+
+exports.createLocation = functions.firestore
+  .document('locations/{locationId}')
+  .onCreate((snap, context) => {
+    const record = snap.data();
+
+    const location = record.location;
+
+    console.log('[data] - ', record);
+
+    return snap.ref.set({
+      uuid: location.uuid,
+      timestamp: location.timestamp,
+      is_moving: location.is_moving,
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      speed: location.coords.speed,
+      heading: location.coords.heading,
+      altitude: location.coords.altitude,
+      event: location.event,
+      battery_is_charging: location.battery.is_charging,
+      battery_level: location.battery.level,
+      activity_type: location.activity.type,
+      activity_confidence: location.activity.confidence,
+      extras: location.extras
+    });
+});
+
+
+exports.createGeofence = functions.firestore
+  .document('geofences/{geofenceId}')
+  .onCreate((snap, context) => {
+    const record = snap.data();
+
+    const location = record.location;
+
+    console.log('[data] - ', record);
+
+    return snap.ref.set({
+      uuid: location.uuid,
+      identifier: location.geofence.identifier,
+      action: location.geofence.action,
+      timestamp: location.timestamp,
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      extras: location.extras,
+    });
+});
+
+```
+
+## :large_blue_diamond: Configuration Options
+
+#### `@param {String} locationsCollection [locations]`
+
+The collection name to post `location` events to.  Eg:
+
+```javascript
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  locationsCollection: '/locations'
+));
+
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  locationsCollection: '/users/123/locations'
+));
+
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  locationsCollection: '/users/123/routes/456/locations'
+));
+
+```
+
+#### `@param {String} geofencesCollection [geofences]`
+
+The collection name to post `geofence` events to.  Eg:
+
+```javascript
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  geofencesCollection: '/geofences'
+));
+
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  locationsCollection: '/users/123/geofences'
+));
+
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  locationsCollection: '/users/123/routes/456/geofences'
+));
+
 ```
 
 
-## Methods
+#### `@param {Boolean} updateSingleDocument [false]`
 
-| Method Name | Arguments | Notes
-|---|---|---|
-| `configure` | `{config}`, `callbackFn`, `failureFn` | Configures the plugin's fetch `callbackFn`.  This callback will fire each time an iOS background-fetch event occurs (typically every 15 min).  The `failureFn` will be called if the device doesn't support background-fetch. |
-| `status` | `callbackFn` | Your callback will be executed with the current `status (Integer)` `0: Restricted`, `1: Denied`, `2: Available`.  These constants are defined as `BackgroundFetch.STATUS_RESTRICTED`, `BackgroundFetch.STATUS_DENIED`, `BackgroundFetch.STATUS_AVAILABLE` (**NOTE:** Android will always return `STATUS_AVAILABLE`)|
-| `finish` | `fetchResult` | Valid values for `fetchResult (Integer)` include `BackgroundFetch.FETCH_RESULT_NEW_DATA` (0), `BackgroundFetch.FETCH_RESULT_NO_DATA` (1), and `BackgroundFetch.FETCH_RESULT_FAILED` (2).  You **MUST** call this method in your fetch `callbackFn` provided to `#configure` in order to signal to iOS that your fetch action is complete.  iOS provides **only** 30s of background-time for a fetch-event -- if you exceed this 30s, iOS will kill your app. |
-| `start` | `successFn`, `failureFn` | Start the background-fetch API.  Your `callbackFn` provided to `#configure` will be executed each time a background-fetch event occurs.  **NOTE** the `#configure` method *automatically* calls `#start`.  You do **not** have to call this method after you `#configure` the plugin |
-| `stop` | `successFn`, `failureFn` | Stop the background-fetch API from firing fetch events.  Your `callbackFn` provided to `#configure` will no longer be executed. |
+If you prefer, you can instruct the plugin to update a *single document* in Firebase rather than creating a new document for *each* `location` / `geofence`.  In this case, you would presumably implement a *Firebase Function* to deal with updates upon this single document and store the location in some other collection as desired.  If this is your use-case, you'll also need to ensure you configure your `locationsCollection` / `geofencesCollection` accordingly with an even number of "parts", taking the form `/collection_name/document_id`, eg:
 
+```javascript
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  locationsCollection: '/locations/latest'  // <-- 2 "parts":  even
+));
 
+// or
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  locationsCollection: '/users/123/routes/456/the_location'  // <-- 4 "parts":  even
+));
 
-## Debugging
-
-### iOS
-
-- Simulate background fetch events in XCode using **`Debug->Simulate Background Fetch`**
-- iOS can take some hours or even days to start a consistently scheduling background-fetch events since iOS schedules fetch events based upon the user's patterns of activity.  If *Simulate Background Fetch* works, your can be **sure** that everything is working fine.  You just need to wait.
-
-### Android
-
-- Observe plugin logs in `$ adb logcat`:
-```bash
-$ adb logcat *:S ReactNative:V ReactNativeJS:V TSBackgroundFetch:V
-```
-- Simulate a background-fetch event on a device (insert *&lt;your.application.id&gt;*) (only works for sdk `21+`:
-```bash
-$ adb shell cmd jobscheduler run -f <your.application.id> 999
-```
-- For devices with sdk `<21`, simulate a "Headless JS" event with (insert *&lt;your.application.id&gt;*)
-```bash
-$ adb shell am broadcast -a <your.application.id>.event.BACKGROUND_FETCH
+// Don't use an odd number of "parts"
+BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
+  locationsCollection: '/users/123/latest_location'  // <-- 3 "parts": odd!!  No!
+));
 
 ```
 
-## Implementation
 
-### iOS
+# License
 
-Implements [performFetchWithCompletionHandler](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIApplicationDelegate/application:performFetchWithCompletionHandler:), firing a custom event subscribed-to in cordova plugin.
+The MIT License (MIT)
 
-### Android
-
-Android implements background fetch using two different mechanisms, depending on the Android SDK version.  Where the SDK version is `>= LOLLIPOP`, the new [`JobScheduler`](https://developer.android.com/reference/android/app/job/JobScheduler.html) API is used.  Otherwise, the old [`AlarmManager`](https://developer.android.com/reference/android/app/AlarmManager.html) will be used.
-
-Unlike iOS, the Android implementation *can* continue to operate after application terminate (`stopOnTerminate: false`) or device reboot (`startOnBoot: true`).
-
-## Licence
-
-The MIT License
-
-Copyright (c) 2013 Chris Scott, Transistor Software <chris@transistorsoft.com>
-http://transistorsoft.com
+Copyright (c) 2018 Chris Scott, Transistor Software
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -189,13 +268,15 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
