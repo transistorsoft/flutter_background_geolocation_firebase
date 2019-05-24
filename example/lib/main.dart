@@ -42,17 +42,6 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
-      bg.BackgroundGeolocation.addGeofence(bg.Geofence(
-        identifier: location.timestamp,
-        radius: 200,
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        notifyOnEntry: true,
-        notifyOnExit: true
-      ));
-    });
-
     BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
       locationsCollection: "locations",
       geofencesCollection: "geofences",
@@ -61,7 +50,9 @@ class _MyAppState extends State<MyApp> {
 
     bg.BackgroundGeolocation.ready(bg.Config(
       debug: true,
+      distanceFilter: 50,
       logLevel: bg.Config.LOG_LEVEL_VERBOSE,
+      stopTimeout: 1,
       stopOnTerminate: false,
       startOnBoot: true
     )).then((bg.State state) {

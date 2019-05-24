@@ -27,7 +27,7 @@ dev_dependencies:
 
   background_geolocation_firebase:
     path: ../
-  flutter_background_geolocation: ^1.0.6
+  flutter_background_geolocation: ^1.0.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
