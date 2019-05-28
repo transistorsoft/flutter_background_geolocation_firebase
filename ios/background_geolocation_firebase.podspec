@@ -17,6 +17,7 @@ Automatically uploads recorded locations from flutter_background_geolocation to 
   s.dependency 'Flutter'
   s.dependency 'Firebase/Core'
   s.dependency 'Firebase/Firestore'
+  s.static_framework = true
 
   s.ios.deployment_target = '8.0'
 end
