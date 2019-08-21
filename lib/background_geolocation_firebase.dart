@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
 
 const _PLUGIN_PATH =
     "com.transistorsoft/flutter_background_geolocation_firebase";
