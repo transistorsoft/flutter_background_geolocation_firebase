@@ -1,4 +1,4 @@
-Flutter `background_geolocation_firebase`
+`background_geolocation_firebase`
 ============================================================================
 
 [![](https://dl.dropboxusercontent.com/s/nm4s5ltlug63vv8/logo-150-print.png?dl=1)](https://www.transistorsoft.com)

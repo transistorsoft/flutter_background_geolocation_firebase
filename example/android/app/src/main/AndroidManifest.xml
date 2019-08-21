@@ -37,8 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <meta-data android:name="com.transistorsoft.firebaseproxy.license" android:value="YOUR_LICENSE_KEY" />
-        <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="YOUR_LICENSE_KEY" />
+        <meta-data android:name="com.transistorsoft.firebaseproxy.license" android:value="5faf1372793971e6bf3974d9fa098c44c8d88bf7cebe4977c2749354173daf76" />
+        <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="0faf256689b7b40fbd8f672615131d27d111cc70148890b0450094548449f1a1" />
 
     </application>
 </manifest>
