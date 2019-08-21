@@ -52,8 +52,6 @@ static NSString *const DEFAULT_GEOFENCES_COLLECTION = @"geofences";
 }
 
 -(void) configure:(NSDictionary*)config result:(FlutterResult)result {
-    NSLog(@"******************* confiugure: %@", config);
-    
     if (config[FIELD_LOCATIONS_COLLECTION]) {
         _locationsCollection = config[FIELD_LOCATIONS_COLLECTION];
     }
@@ -63,9 +61,7 @@ static NSString *const DEFAULT_GEOFENCES_COLLECTION = @"geofences";
     if (config[FIELD_UPDATE_SINGLE_DOCUMENT]) {
         _updateSingleDocument = [config[FIELD_UPDATE_SINGLE_DOCUMENT] boolValue];
     }
-    
-    NSLog(@"************** isRegistered: %d", isRegistered);
-    
+
     if (!isRegistered) {
         isRegistered = YES;
         
@@ -83,8 +79,6 @@ static NSString *const DEFAULT_GEOFENCES_COLLECTION = @"geofences";
 }
 
 -(void) onPersist:(NSNotification*)notification {
-    NSLog(@"********** onPersist: %@", notification);
-    
     NSDictionary *data = notification.object;
     NSString *collectionName = (data[@"location"][@"geofence"]) ? _geofencesCollection : _locationsCollection;
 
