@@ -20,12 +20,14 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _enabled;
+  bool _persistEnabled;
   String _locationJSON;
   JsonEncoder _encoder = new JsonEncoder.withIndent('  ');
 
   @override
   void initState() {
     _enabled = false;
+    _persistEnabled = true;
     _locationJSON = "Toggle the switch to start tracking.";
 
     super.initState();
@@ -80,6 +82,22 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  void _onClickEnablePersist() {
+    setState(() {
+      _persistEnabled = !_persistEnabled;
+    });
+
+    if (_persistEnabled) {
+      bg.BackgroundGeolocation.setConfig(bg.Config(
+        persistMode: bg.Config.PERSIST_MODE_ALL
+      ));
+    } else {
+      bg.BackgroundGeolocation.setConfig(bg.Config(
+        persistMode: bg.Config.PERSIST_MODE_NONE
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -99,6 +117,12 @@ class _MyAppState extends State<MyApp> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  MaterialButton(
+                      //minWidth: 50.0,
+                      child: Icon(Icons.play_arrow, color: Colors.white),
+                      color: Colors.red,
+                      onPressed: _onClickEnablePersist
+                  )
                 ]
             )
           )
