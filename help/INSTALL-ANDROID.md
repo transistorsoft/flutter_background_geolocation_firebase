@@ -7,12 +7,12 @@
 ```diff
 buildscript {
     ext {
-        compileSdkVersion   = 28
-        targetSdkVersion    = 28
-        supportLibVersion   = "1.0.2"
-        playServicesLocationVersion = "16.0.0"
-+       firebaseCoreVersion = "16.0.9"      // Or latest
-+       firebaseFirestoreVersion = "19.0.0" // Or latest
+        compileSdkVersion   = 28                // Or latest
+        targetSdkVersion    = 28                // Or latest
+        supportLibVersion   = "1.1.0"           // Or latest
+        playServicesLocationVersion = "17.0.0"  // Or Latest
++       firebaseCoreVersion = "17.4.4"          // Or latest
++       firebaseFirestoreVersion = "21.5.0"     // Or latest
     }
     repositories {
         google()
@@ -21,7 +21,26 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
-+       classpath 'com.google.gms:google-services:4.2.0'  // Or latest
++       classpath 'com.google.gms:google-services:4.3.3'  // Or latest
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            // [required] flutter_background_geolocation
+            url "${project(':flutter_background_geolocation').projectDir}/libs"
+        }
+        maven {
+            // [required] background_fetch
+            url "${project(':background_fetch').projectDir}/libs"
+        }
++       maven {
++           // [required] background_geolocation_firebase
++           url "${project(':background_geolocation_firebase').projectDir}/libs"
++       }
     }
 }
 ```
@@ -59,8 +78,11 @@ If you've [purchased a license](https://shop.transistorsoft.com/products/backgro
     android:label="@string/app_name"
     android:icon="@mipmap/ic_launcher"
     android:theme="@style/AppTheme">
-
-    <!-- Flutter Background Geolocation Firebase licence -->
+    
+    <!-- Flutter Background Geolocation License -->
+    <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="YOUR_BACKGROUND_GEOLOCATION_LICENSE" />
+    
++   <!-- Flutter Background Geolocation Firebase licence -->
 +   <meta-data android:name="com.transistorsoft.firebaseproxy.license" android:value="YOUR_LICENCE_KEY_HERE" />
     .
     .

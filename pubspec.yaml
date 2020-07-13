@@ -1,18 +1,21 @@
 name: background_geolocation_firebase
 description: A Firebase adapter for the flutter_background_geolocation plugin.  Automatically syncs recorded locations to your Firestore database.
-version: 0.1.0
+version: 0.2.0
 author: Chris Scott, Transistor Software <info@transistorsoft.com>
 homepage: https://github.com/transistorsoft/flutter_background_geolocation_firebase
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.1.0 <3.0.0"
+  flutter: ">=1.10.0 <2.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_background_geolocation: ">=1.0.7 <2.0.0"
 flutter:
   plugin:
-    androidPackage: com.transistorsoft.flutter.backgroundgeolocation
-    pluginClass: BackgroundGeolocationFirebasePlugin
-
+    platforms:
+      android:
+        package: com.transistorsoft.flutter.backgroundgeolocation
+        pluginClass: BackgroundGeolocationFirebasePlugin
+      ios:
+        pluginClass: BackgroundGeolocationFirebasePlugin

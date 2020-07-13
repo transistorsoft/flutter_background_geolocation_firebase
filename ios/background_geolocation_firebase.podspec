@@ -1,14 +1,16 @@
+require 'yaml'
+pubspec = YAML.load_file('../pubspec.yaml')
+
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name             = 'background_geolocation_firebase'
-  s.version          = '0.0.1'
-  s.summary          = 'Firebase adapter for flutter_background_geolocation'
-  s.description      = <<-DESC
-Automatically uploads recorded locations from flutter_background_geolocation to your Firestore database.
-                       DESC
-  s.homepage         = 'https://github.com/transistorsoft/flutter_background_geolocation_firebase'
+  s.name             = pubspec['name']
+  s.version          = pubspec['version']
+  s.summary          = pubspec['description']
+  s.description      = pubspec['description']
+  s.homepage         = pubspec['homepage']
+
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Transistor Software' => 'info@transistorsoft.com' }
   s.source           = { :path => '.' }

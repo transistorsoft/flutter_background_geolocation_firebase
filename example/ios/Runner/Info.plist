@@ -3,17 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>BGGeo Firebase</string>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.transistorsoft.flutter.backgroundgeolocation.backgroundgeolocationfirebaseexample</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>background_fetch_example</string>
+	<string>backgroundgeolocationfirebaseexample</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -25,16 +23,17 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location Always and When in Use Description</string>
+	<string>ALWAYS_AND_WHEN_IN_USE_DESCRIPTION</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location WhenInUse Description</string>
+	<string>WHEN_IN_USE_DESCRIPTION</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Motion Always description</string>
+	<string>MOTION_USAGE_DESCRIPTION</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
 		<string>fetch</string>
 		<string>location</string>
+		<string>processing</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
