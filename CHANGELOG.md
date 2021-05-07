@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 1.0.0 - 2021-05-07
+## 1.0.0-nullsafety.1 - 2021-05-07
 * [Changed] Add nullsafety support
 
 ## 0.2.0 - 2020-07-13
