@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.0 - 2021-09-21
+* [Fixed][Android] Update Android plugin to V2 spec.
+
 ## 1.0.0-nullsafety.1 - 2021-05-07
 * [Changed] Add nullsafety support
 
