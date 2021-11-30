@@ -43,7 +43,7 @@ class BackgroundGeolocationFirebaseConfig {
   /// ));
   /// ```
   ///
-  String locationsCollection;
+  String? locationsCollection;
 
   /// The collection name to post geofence events to.  Defaults to `"geofences"`.
   ///
@@ -60,7 +60,7 @@ class BackgroundGeolocationFirebaseConfig {
   ///   locationsCollection: '/users/123/routes/456/geofences'
   /// ));
   /// ```
-  String geofencesCollection;
+  String? geofencesCollection;
 
   /// Instruct the plugin to update a single document in Firebase rather than creating a new document for each location / geofence.
   ///
@@ -81,7 +81,7 @@ class BackgroundGeolocationFirebaseConfig {
   ///   locationsCollection: '/users/123/latest_location'  // <-- 3 "parts": odd!!  No!
   /// ));
   /// ```
-  bool updateSingleDocument;
+  bool? updateSingleDocument;
 
   BackgroundGeolocationFirebaseConfig(
       {this.locationsCollection,
@@ -134,7 +134,7 @@ class BackgroundGeolocationFirebase {
   /// ));
   /// ```
   static Future<bool> configure(BackgroundGeolocationFirebaseConfig config) {
-    Completer completer = new Completer<bool>();
+    Completer<bool> completer = new Completer<bool>();
 
     _methodChannel
         .invokeMethod('configure', config.toMap())

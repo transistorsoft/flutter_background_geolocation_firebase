@@ -1,78 +1,61 @@
 package com.transistorsoft.flutter.backgroundgeolocation;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
-
-import com.transistorsoft.tsfirebaseproxy.TSFirebaseProxy;
-
-import java.util.List;
-import java.util.Map;
-
-import io.flutter.plugin.common.EventChannel;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
+import androidx.annotation.NonNull;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** BackgroundFetchPlugin */
-public class BackgroundGeolocationFirebasePlugin implements MethodCallHandler {
-    public static final String TAG                          = "TSFirebaseProxy";
-    static final String PLUGIN_ID                           = "com.transistorsoft/flutter_background_geolocation_firebase";
+public class BackgroundGeolocationFirebasePlugin implements FlutterPlugin, ActivityAware {
 
-    private static final String METHOD_CHANNEL_NAME         = PLUGIN_ID + "/methods";
-
-    private Context mContext;
-    private boolean isRegistered;
-
-    /** Plugin registration. */
+    // @deprecated Not used by v2.
     public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), METHOD_CHANNEL_NAME);
-        channel.setMethodCallHandler(new BackgroundGeolocationFirebasePlugin(registrar));
-    }
-
-    private BackgroundGeolocationFirebasePlugin(Registrar registrar) {
-        isRegistered = false;
-        mContext = registrar.context().getApplicationContext();
-
+        BackgroundGeolocationFirebaseModule module = BackgroundGeolocationFirebaseModule.getInstance();
+        module.onAttachedToEngine(registrar.context(), registrar.messenger());
         if (registrar.activity() != null) {
-            Intent intent = registrar.activity().getIntent();
-            String action = intent.getAction();
-
+            module.setActivity(registrar.activity());
         }
     }
 
-    @SuppressWarnings("unchecked")
+    // @deprecated Called by Application#onCreate
+    public static void setPluginRegistrant(PluginRegistry.PluginRegistrantCallback callback) {
+
+    }
+
+    public BackgroundGeolocationFirebasePlugin() { }
+
     @Override
-    public void onMethodCall(MethodCall call, Result result) {
-        if (call.method.equals("configure")) {
-            Map<String, Object> params = (Map<String, Object>) call.arguments;
-            configure(params, result);
-        } else {
-            result.notImplemented();
-        }
+    public void onAttachedToEngine(FlutterPlugin.FlutterPluginBinding binding) {
+        BackgroundGeolocationFirebaseModule.getInstance().onAttachedToEngine(binding.getApplicationContext(), binding.getBinaryMessenger());
     }
 
-    private void configure(Map<String, Object> params, Result result) {
-        TSFirebaseProxy proxy = TSFirebaseProxy.getInstance(mContext);
-        if (params.containsKey("locationsCollection")) {
-            proxy.setLocationsCollection((String) params.get("locationsCollection"));
-        }
-        if (params.containsKey("geofencesCollection")) {
-            proxy.setGeofencesCollection((String) params.get("geofencesCollection"));
-        }
-        if (params.containsKey("updateSingleDocument")) {
-            proxy.setUpdateSingleDocument((boolean) params.get("updateSingleDocument"));
-        }
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        BackgroundGeolocationFirebaseModule.getInstance().onDetachedFromEngine();
+    }
 
-        proxy.save(mContext);
-        if (!isRegistered) {
-            isRegistered = true;
-            proxy.register(mContext);
-        }
-        result.success(true);
+    @Override
+    public void onAttachedToActivity(ActivityPluginBinding activityPluginBinding) {
+        BackgroundGeolocationFirebaseModule.getInstance().setActivity(activityPluginBinding.getActivity());
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+        // TODO: the Activity your plugin was attached to was
+        // destroyed to change configuration.
+        // This call will be followed by onReattachedToActivityForConfigChanges().
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding activityPluginBinding) {
+        // TODO: your plugin is now attached to a new Activity
+        // after a configuration change.
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+        BackgroundGeolocationFirebaseModule.getInstance().setActivity(null);
     }
 }

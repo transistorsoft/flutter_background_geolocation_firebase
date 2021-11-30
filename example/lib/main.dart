@@ -19,9 +19,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _enabled;
-  bool _persistEnabled;
-  String _locationJSON;
+  late bool _enabled;
+  late bool _persistEnabled;
+  late String _locationJSON;
   JsonEncoder _encoder = new JsonEncoder.withIndent('  ');
 
   @override
@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
   }
 
 
-  void _onClickEnable(enabled) {
+  void _onClickEnable(bool enabled) {
     setState(() {
       _enabled = enabled;
     });

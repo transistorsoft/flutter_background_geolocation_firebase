@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.0 - 2021-09-21
+* [Fixed][Android] Update Android plugin to V2 spec.
+
+## 1.0.0-nullsafety.1 - 2021-05-07
+* [Changed] Add nullsafety support
+
 ## 0.2.0 - 2020-07-13
 * [Fixed][Android] `com.android.tools.build:gradle:4.0.0` no longer allows "*direct local aar dependencies*".  The Android Setup now requires a custom __`maven url`__ to be added to your app's root __`android/build.gradle`__:
 
