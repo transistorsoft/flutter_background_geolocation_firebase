@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
         appBar: new AppBar(
           title: const Text('BGGeo Firebase Example', style: TextStyle(color: Colors.black)),
           backgroundColor: Colors.amberAccent,
-          brightness: Brightness.light,
+          foregroundColor: Colors.black,
           actions: <Widget>[
             Switch(value: _enabled, onChanged: _onClickEnable),
           ]

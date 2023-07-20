@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.1 - 2023-08-20
+* [Android] Update example gradle version.  Update plugin default firebaseCoreVersion, firestoreVersion to latest versions.
+
 ## 1.0.0 - 2021-09-21
 * [Fixed][Android] Update Android plugin to V2 spec.
 
