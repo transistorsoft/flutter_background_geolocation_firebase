@@ -1,42 +1,23 @@
-buildscript {
-    ext.kotlin_version = '1.6.21'
-    ext {
-        compileSdkVersion   = 33
-        targetSdkVersion    = 33
-        minSdkVersion       = 19
-        supportLibVersion   = "1.4.2"
-        playServicesLocationVersion = "21.0.1"
-        firebaseCoreVersion = "21.1.1"
-        firebaseFirestoreVersion = "24.7.0"
-    }
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+ext {
+    kotlin_version = '1.7.10'
+    compileSdkVersion   = 34
+    targetSdkVersion    = 34
+    minSdkVersion       = 21
+    playServicesLocationVersion = "21.0.1"
+    FirebaseSDKVersion = "33.4.0"
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
-        maven {
-            // [required] background_geolocation_firebase
-            url "${project(':background_geolocation_firebase').projectDir}/libs"
-        }
-        maven {
-            // [required] flutter_background_geolocation
-            url "${project(':flutter_background_geolocation').projectDir}/libs"
-        }
-        maven {
-            // [required] background_fetch
-            url "${project(':background_fetch').projectDir}/libs"
-        }
+        // [required] background_geolocation_firebase
+        maven { url "${project(':background_geolocation_firebase').projectDir}/libs" }
+        // [required] flutter_background_geolocation
+        maven { url "${project(':flutter_background_geolocation').projectDir}/libs" }
+        maven { url 'https://developer.huawei.com/repo/' }
+        // [required] background_fetch
+        maven { url "${project(':background_fetch').projectDir}/libs" }
     }
 }
 

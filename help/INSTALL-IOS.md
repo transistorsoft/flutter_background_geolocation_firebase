@@ -1,12 +1,14 @@
 # iOS Setup
 
-### :open_file_folder: **`AppDelegate.m`**
+### :open_file_folder: Open your **`AppDelegate.m`** or **`AppDelegate.swift`**:
 
+
+#### :open_file_folder: __`AppDelegate.m`__
 ```diff
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
 
-+#import <Firebase/Firebase.h>
++@import FirebaseCore
 
 @implementation AppDelegate
 
@@ -20,6 +22,27 @@
 
 @end
 ```
+
+#### :open_file_folder: __`AppDelgate.swift`__:
+
+```diff
+import UIKit
+import Flutter
++import FirebaseCore;
+
+@main
+@objc class AppDelegate: FlutterAppDelegate {
+  override func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    GeneratedPluginRegistrant.register(with: self)
++   FirebaseApp.configure()
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+}
+```
+
 
 ### **`Google-Services-Info.plist`**
 
