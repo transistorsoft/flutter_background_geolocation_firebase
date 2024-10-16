@@ -1,8 +1,8 @@
 import UIKit
 import Flutter
-import Firebase;
+import FirebaseCore;
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
     _ application: UIApplication,

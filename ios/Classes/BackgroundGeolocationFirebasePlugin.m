@@ -1,6 +1,7 @@
 #import "BackgroundGeolocationFirebasePlugin.h"
 
-#import "Firebase.h"
+@import FirebaseCore;
+@import FirebaseFirestore;
 
 static NSString *const PLUGIN_PATH = @"com.transistorsoft/flutter_background_geolocation_firebase";
 static NSString *const METHOD_CHANNEL_NAME      = @"methods";

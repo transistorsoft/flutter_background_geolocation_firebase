@@ -1,16 +1,6 @@
 group 'com.transistorsoft.flutter.backgroundgeolocation'
 version '1.0-SNAPSHOT'
 
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
-    }
-}
-
 rootProject.allprojects {
     repositories {
         google()
@@ -20,9 +10,8 @@ rootProject.allprojects {
 
 apply plugin: 'com.android.library'
 
-def DEFAULT_COMPILE_SDK_VERSION                 = 31
-def DEFAULT_FIREBASE_CORE_VERSION                = "21.1.1"
-def DEFAULT_FIREBASE_FIRESTORE_VERSION           = "24.7.0"
+def DEFAULT_COMPILE_SDK_VERSION                 = 34
+def DEFAULT_FIREBASE_SDK_VERSION                 = "33.4.0"
 def DEFAULT_LOGBACK_VERSION                      = "3.0.0"
 def DEFAULT_SLF4J_VERSION                        = "2.0.7"
 
@@ -31,6 +20,9 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
+    if (project.android.hasProperty("namespace")) {
+        namespace("com.transistorsoft.flutter.backgroundgeolocation.firebase")
+    }
     compileSdkVersion safeExtGet('compileSdkVersion', DEFAULT_COMPILE_SDK_VERSION)
 
     defaultConfig {
@@ -49,17 +41,17 @@ repositories {
 }
 
 dependencies {
+    def FirebaseSDKVersion = safeExtGet("FirebaseSDKVersion", DEFAULT_FIREBASE_SDK_VERSION);
 
-    def firebaseCoreVersion = safeExtGet('firebaseCoreVersion', DEFAULT_FIREBASE_CORE_VERSION)
-    def firebaseFirestoreVersion = safeExtGet('firebaseFirestoreVersion', DEFAULT_FIREBASE_FIRESTORE_VERSION)
     def logbackVersion = safeExtGet('logbackVersion', DEFAULT_LOGBACK_VERSION);
     def slf4jVersion = safeExtGet('slf4jVersion', DEFAULT_SLF4J_VERSION);
 
     api(group: 'com.transistorsoft', name:'tsfirebaseproxy', version: '+')
     implementation 'org.greenrobot:eventbus:3.3.1'
-    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
-    implementation "com.google.firebase:firebase-firestore:$firebaseFirestoreVersion"
-    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:$FirebaseSDKVersion"))
+    implementation "com.google.firebase:firebase-firestore"
+
     implementation "org.slf4j:slf4j-api:$slf4jVersion"
     implementation "com.github.tony19:logback-android:$logbackVersion"
 }

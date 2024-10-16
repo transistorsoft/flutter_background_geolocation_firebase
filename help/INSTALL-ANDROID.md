@@ -4,58 +4,76 @@
 
 ### :open_file_folder: **`android/build.gradle`**
 
+- Add the following **required** `maven` repo url:
+
 ```diff
-buildscript {
-    ext {
-        compileSdkVersion   = 28                // Or latest
-        targetSdkVersion    = 28                // Or latest
-        supportLibVersion   = "1.1.0"           // Or latest
-        playServicesLocationVersion = "17.0.0"  // Or Latest
-+       firebaseCoreVersion = "17.4.4"          // Or latest
-+       firebaseFirestoreVersion = "21.5.0"     // Or latest
-    }
+allprojects {   // <-- IMPORTANT:  allprojects
     repositories {
         google()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
-+       classpath 'com.google.gms:google-services:4.3.3'  // Or latest
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven {
-            // [required] flutter_background_geolocation
-            url "${project(':flutter_background_geolocation').projectDir}/libs"
-        }
-        maven {
-            // [required] background_fetch
-            url "${project(':background_fetch').projectDir}/libs"
-        }
-+       maven {
-+           // [required] background_geolocation_firebase
-+           url "${project(':background_geolocation_firebase').projectDir}/libs"
-+       }
+        mavenCentral()
+        // [required] flutter_background_geolocation
+        maven { url "${project(':flutter_background_geolocation').projectDir}/libs" }
+        // [required] background_fetch
+        maven { url "${project(':background_fetch').projectDir}/libs" }
++       // [required] background_geolocation_firebase
++       maven { url "${project(':background_geolocation_firebase').projectDir}/libs" }
     }
 }
 ```
 
-### :open_file_folder: **`android/app/build.gradle`**
+- #### If you're using `flutter >= 3.19.0` ([New Android Architecture](https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply)):
+
+```diff
++ext {
++    compileSdkVersion   = 34                // or higher / as desired
++    targetSdkVersion    = 34                // or higher / as desired
++    minSdkVersion       = 21                // Required minimum
++    FirebaseSDKVersion  = "33.4.0"          // or as desired.
++}
+```
+
+- #### Otherwise for `flutter < 3.19.0` (Old Android Architecture):
 
 ```diff
 
-dependencies {
-    .
-    .
-    .
+buildscript {
+    ext.kotlin_version = '1.3.0' // Must use 1.3.0 OR HIGHER
++   ext {
++       compileSdkVersion   = 34                // or higher / as desired
++       targetSdkVersion    = 34                // or higher / as desired
++       minSdkVersion       = 21                // Required minimum
++       FirebaseSDKVersion  = "33.4.0"          // or as desired.
++   }
 }
+```
 
-+apply plugin: 'com.google.gms.google-services'
+> [!NOTE]  
+> the param __`ext.FirebaseSdkVersion`__ controls the imported version of the *Firebase SDK* (`com.google.firebase:firebase-bom`).  Consult the [Firebase Release Notes](https://firebase.google.com/support/release-notes/android?_gl=1*viqpog*_up*MQ..*_ga*MTE1NjI2MDkuMTcyOTA4ODY0MQ..*_ga_CW55HF8NVT*MTcyOTA4ODY0MS4xLjAuMTcyOTA4ODY0MS4wLjAuMA..#latest_sdk_versions) to determine the latest version of the *Firebase* SDK
+
+
+
+### :open_file_folder: **`android/settings.gradle`**
+- Add the `google-services` plugin (if you haven't already):
+
+```diff
+plugins {
+    id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+    id "com.android.application" version "7.3.1" apply false
+    id "org.jetbrains.kotlin.android" version "1.7.10" apply false
++   id 'com.google.gms.google-services' version '4.3.15' apply false    // Or any desired version.
+}
+```
+
+### :open_file_folder: **`android/app/build.gradle`**
+- In your app level `build.gradle`, apply the `google-services` plugin:
+
+```diff
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
++   id "com.google.gms.google-services"
+}
 ```
 
 ### :open_file_folder: **`google-services.json`**

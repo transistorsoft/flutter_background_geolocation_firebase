@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.1.0 - 2024-10-16
+* Update Firebase/Firestore dependencies for both iOS and Android.
+* [Android] Update Gradle config.  Add required `namespace` attribute.
+* [Android] Introduce new Gradle `ext.FirebaseSDKVersion` param for controlling / aligning the imported version of Firebase SDK with other libraries.
+
 ## 1.0.1 - 2023-08-20
 * [Android] Update example gradle version.  Update plugin default firebaseCoreVersion, firestoreVersion to latest versions.
 
