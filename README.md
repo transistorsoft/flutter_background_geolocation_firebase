@@ -244,12 +244,12 @@ BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
 
 // or
 BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
-  locationsCollection: '/users/123/routes/456/the_location'  // <-- 4 "parts":  even
+  locationsCollection: '/users/user123/locations/latest_location'  // <-- 4 "parts":  even
 ));
 
 // Don't use an odd number of "parts"
 BackgroundGeolocationFirebase.configure(BackgroundGeolocationFirebaseConfig(
-  locationsCollection: '/users/123/latest_location'  // <-- 3 "parts": odd!!  No!
+  locationsCollection: '/users/user123/latest_location'  // <-- 3 "parts": odd!!  No!
 ));
 
 ```
